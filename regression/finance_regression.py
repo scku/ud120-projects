@@ -18,6 +18,7 @@ import sys
 import pickle
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
+from sklearn.linear_model import LinearRegression
 dictionary = pickle.load( open("../final_project/final_project_dataset_modified.pkl", "r") )
 
 ### list the features you want to look at--first item in the 
@@ -37,12 +38,12 @@ test_color = "r"
 ### your regression goes here!
 ### please name it reg, so that the plotting code below picks it up and 
 ### plots it correctly
-
-
-
-
-
-
+reg = LinearRegression()
+reg.fit(feature_train, target_train)
+print "Slope:{0}".format(reg.coef_)
+print "Intercept:{0}".format(reg.intercept_)
+print reg.score(feature_train, target_train)
+print reg.score(feature_test, target_test)
 
 
 ### draw the scatterplot, with color-coded training and testing points
@@ -64,7 +65,10 @@ try:
     plt.plot( feature_test, reg.predict(feature_test) )
 except NameError:
     pass
+reg.fit(feature_test, target_test)
+plt.plot(feature_train, reg.predict(feature_train), color="r") 
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()
 plt.show()
+print "Slope:{0}".format(reg.coef_[0])
