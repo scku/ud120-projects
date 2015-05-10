@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from sklearn.linear_model import LinearRegression
 
 def outlierCleaner(predictions, ages, net_worths):
     """
@@ -14,7 +15,13 @@ def outlierCleaner(predictions, ages, net_worths):
     cleaned_data = []
 
     ### your code goes here
+    reg = LinearRegression()
+    reg.fit(ages, net_worths)
 
-    
-    return cleaned_data
+    for age, net_worth, prediction in zip(ages, net_worths, predictions):
+        error = abs(net_worth - prediction)
+        cleaned_data.append((age, net_worth, error))
+    cleaned_data = sorted(cleaned_data, key=lambda x: x[2])
+    length = int(.9 * len(predictions))
+    return cleaned_data[0:length]
 
