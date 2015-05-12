@@ -49,6 +49,7 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -76,13 +77,23 @@ Draw(pred, finance_features, poi, name="clusters_before_scaling.pdf", f1_name=fe
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
+feature_3 = "total_payments"
+features_list = ["poi", feature_1, feature_2, feature_3]
+data3 = featureFormat(data_dict, features_list)
+poi, finance_features = targetFeatureSplit(data3)
+pred = clf.fit_predict(finance_features)
 
 try:
     Draw(pred, finance_features, poi, mark_poi=False, name="clusters.pdf", f1_name=feature_1, f2_name=feature_2)
 except NameError:
     print "no predictions object named pred found, no clusters to plot"
 
-
-
+features = ['exercised_stock_options', 'salary']
+for feature in features:
+    l = []
+    for i in data_dict:
+        if data_dict[i][feature] != 'NaN':
+            l.append(data_dict[i][feature])
+    print "{0} min:{1} max:{2}".format(feature, min(l), max(l))
 
 
