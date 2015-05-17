@@ -96,4 +96,16 @@ for feature in features:
             l.append(data_dict[i][feature])
     print "{0} min:{1} max:{2}".format(feature, min(l), max(l))
 
+# Lesson 9: scale features
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
 
+data4 = featureFormat(data_dict, [feature_1])
+data4 = numpy.append(data4, [200000])
+print data4
+print scaler.fit_transform(data4)
+
+data5 = featureFormat(data_dict, [feature_2])
+data5 = numpy.append(data5, [1000000])
+print data5
+print scaler.fit_transform(data5)
